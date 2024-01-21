@@ -1,2 +1,3 @@
+@host = https://localhost:44350
 POST {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}/reminders/{{reminderId}}/dismiss
 Authorization: Bearer {{token}}
