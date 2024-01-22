@@ -3,6 +3,7 @@ using System.Net.Mail;
 
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Settings;
 using CleanArchitecture.Infrastructure.Reminders.BackgroundServices;
 using CleanArchitecture.Infrastructure.Reminders.Persistence;
 using CleanArchitecture.Infrastructure.Security;
@@ -97,7 +98,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
+        services.Configure<AppSettings>(configuration.GetSection(nameof(AppSettings)));
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 

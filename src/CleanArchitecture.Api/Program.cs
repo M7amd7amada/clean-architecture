@@ -2,12 +2,17 @@ using CleanArchitecture.Api;
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure;
 
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
         .AddPresentation()
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
+
+    builder.Host.UseSerilog((context, loggerConfig) =>
+        loggerConfig.ReadFrom.Configuration(context.Configuration));
 }
 
 var app = builder.Build();
@@ -22,8 +27,11 @@ var app = builder.Build();
     }
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
     app.UseAuthorization();
+
     app.MapControllers();
 
-    app.Run();
+    await app.RunAsync();
 }

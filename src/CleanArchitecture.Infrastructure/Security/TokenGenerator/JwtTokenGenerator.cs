@@ -4,15 +4,23 @@ using System.Text;
 
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Users;
+using CleanArchitecture.Infrastructure.Common.Settings;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CleanArchitecture.Infrastructure.Security.TokenGenerator;
 
-public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    private readonly JwtSettings _jwtSettings = jwtOptions.Value;
+    private readonly AppSettings _appSettings;
+    private readonly JwtSettings _jwtSettings;
+
+    public JwtTokenGenerator(IOptions<AppSettings> settingsOptions)
+    {
+        _appSettings = settingsOptions.Value;
+        _jwtSettings = _appSettings.JwtSettings!;
+    }
 
     public string GenerateToken(
         Guid id,
@@ -23,7 +31,7 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGene
         List<string> permissions,
         List<string> roles)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
