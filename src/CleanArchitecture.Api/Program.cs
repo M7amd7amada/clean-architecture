@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using CleanArchitecture.Api;
 using CleanArchitecture.Application;
 using CleanArchitecture.Infrastructure;
@@ -13,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Host.UseSerilog((context, loggerConfig) =>
         loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+    var configs = builder.Configuration.GetSection("ConnectionStrings");
 }
 
 var app = builder.Build();
