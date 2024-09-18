@@ -11,6 +11,7 @@
     <PackageReference Include="ErrorOr" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="throw" />
+    <PackageReference Include="throw" />
   </ItemGroup>
 
 </Project>
